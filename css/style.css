@@ -1,0 +1,252 @@
+/* =====================================================
+   Smart Health — main stylesheet
+   1) Variables  2) Base  3) Navbar  4) Cards & tables
+   5) Pages     6) Animations  7) Dark mode  8) Responsive
+   ===================================================== */
+
+/* ---------- 1) CSS VARIABLES ---------- */
+:root {
+  --primary: #0f766e;        /* teal */
+  --primary-dark: #115e59;
+  --accent: #22d3ee;         /* cyan glow */
+  --bg: #f1f5f9;             /* page background */
+  --surface: #ffffff;        /* card background */
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
+  --shadow: 0 8px 24px rgba(15, 23, 42, .08);
+  --radius: 16px;
+}
+
+/* Dark theme — applied when <body> has .dark */
+body.dark {
+  --bg: #0b1220;
+  --surface: #111c2e;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #1e293b;
+  --shadow: 0 8px 24px rgba(0, 0, 0, .45);
+}
+
+/* ---------- 2) BASE ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background .3s, color .3s;
+}
+
+/* Accessibility: visible focus + skip link */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.skip-link {
+  position: absolute; left: -999px; top: 0;
+  background: var(--primary); color: #fff;
+  padding: 10px 16px; z-index: 1000; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------- Loading screen ---------- */
+.loader {
+  position: fixed; inset: 0; z-index: 999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--primary); color: #fff; gap: 14px;
+  transition: opacity .6s, visibility .6s;
+}
+.loader.hide { opacity: 0; visibility: hidden; }
+.loader-heart { font-size: 54px; animation: beat 1s infinite; }
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+/* ---------- 3) NAVBAR ---------- */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px 5%;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.nav-left { display: flex; align-items: center; gap: 10px; }
+.nav-left h1 { font-size: 1.3rem; }
+.nav-left h1 span { color: var(--primary); }
+.logo {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff; font-size: 1.1rem;
+}
+
+.nav-menu { display: flex; gap: 4px; list-style: none; }
+.nav-link {
+  text-decoration: none; color: var(--muted);
+  padding: 8px 14px; border-radius: 10px; font-size: .92rem;
+  transition: .25s;
+}
+.nav-link:hover { background: rgba(15, 118, 110, .1); color: var(--primary); }
+.nav-link.active { background: var(--primary); color: #fff; }
+
+.badge {
+  background: var(--danger); color: #fff;
+  font-size: .7rem; padding: 1px 7px; border-radius: 999px;
+}
+
+.nav-right { display: flex; align-items: center; gap: 8px; }
+
+.lang-select {
+  padding: 7px 10px; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  cursor: pointer; transition: .25s;
+}
+.icon-btn:hover { background: var(--primary); color: #fff; }
+.menu-btn { display: none; }
+
+/* ---------- 4) CONTAINER, CARDS, TABLES ---------- */
+.container {
+  max-width: 1200px; margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.page { display: none; animation: fadeUp .45s ease; }
+.page.active { display: block; }
+
+.page-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 22px; }
+.page-head h2 { font-size: 1.6rem; width: 100%; }
+.page-head p { color: var(--muted); width: 100%; margin-top: -8px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border: none; border-radius: 10px;
+  background: var(--primary); color: #fff;
+  font-family: inherit; font-size: .9rem; cursor: pointer; transition: .25s;
+}
+.btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+.cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px; margin-bottom: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  transition: transform .3s;
+}
+.card:hover { transform: translateY(-4px); }
+.card h3 { font-size: 1rem; margin-bottom: 14px; display: flex; gap: 8px; align-items: center; }
+
+/* Stat card */
+.stat {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow);
+  border-left: 5px solid var(--primary);
+  display: flex; gap: 14px; align-items: center;
+  transition: transform .3s;
+}
+.stat:hover { transform: translateY(-5px); }
+.stat i {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 1.3rem; color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+.stat .value { font-size: 1.5rem; font-weight: 700; }
+.stat .label { color: var(--muted); font-size: .85rem; }
+.stat small { font-size: .78rem; }
+.up { color: var(--success); } .down { color: var(--danger); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+th { background: rgba(15, 118, 110, .08); color: var(--primary); font-weight: 600; }
+tr:hover td { background: rgba(15, 118, 110, .05); }
+
+/* Status pills */
+.pill { padding: 4px 12px; border-radius: 999px; font-size: .78rem; color: #fff; white-space: nowrap; }
+.ok { background: var(--success); }
+.warn { background: var(--warning); }
+.crit { background: var(--danger); animation: pulse 1.4s infinite; }
+
+/* ---------- 5) LISTS (AI + alerts) ---------- */
+.list { display: flex; flex-direction: column; gap: 12px; }
+.list-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px;
+  border-left: 4px solid var(--info);
+  animation: fadeUp .4s ease;
+}
+.list-item.alert-high { border-left-color: var(--danger); }
+.list-item.alert-med { border-left-color: var(--warning); }
+.list-item.ai { border-left-color: var(--primary); background: rgba(15,118,110,.06); }
+.list-item i { font-size: 1.2rem; color: var(--primary); margin-top: 4px; }
+.list-item .title { font-weight: 600; }
+.list-item .desc { color: var(--muted); font-size: .88rem; }
+.list-item .time { margin-left: auto; font-size: .75rem; color: var(--muted); white-space: nowrap; }
+
+/* Progress bar (beds / attendance) */
+.bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.bar span { display: block; height: 100%; border-radius: 999px; background: var(--primary); transition: width 1s ease; }
+
+/* ---------- 6) ANIMATIONS ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .55; }
+}
+
+/* Accessibility: reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- 7) FOOTER ---------- */
+.footer {
+  text-align: center; padding: 22px;
+  background: var(--surface); border-top: 1px solid var(--border);
+  color: var(--muted); font-size: .85rem;
+}
+
+/* ---------- 8) RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  .menu-btn { display: block; }
+
+  /* Mobile menu — hidden until toggled */
+  .nav-menu {
+    position: absolute; top: 64px; right: 0; left: 0;
+    flex-direction: column; padding: 12px;
+    background: var(--surface); box-shadow: var(--shadow);
+    display: none;
+  }
+  .nav-menu.open { display: flex; animation: fadeUp .3s ease; }
+}

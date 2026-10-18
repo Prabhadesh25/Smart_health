@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Health - AI-Driven Health Center & Supply Chain Management for PHCs and CHCs" />
+  <title>Smart Health | AI Health Center Management</title>
+
+  <!-- Google Fonts + Font Awesome icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Our own styles -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- ===== Accessibility: skip link ===== -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- ===== Loading animation ===== -->
+  <div id="loader" class="loader">
+    <div class="loader-heart"><i class="fas fa-heartbeat"></i></div>
+    <p>Smart Health</p>
+  </div>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <div class="nav-left">
+      <span class="logo"><i class="fas fa-hospital"></i></span>
+      <h1>Smart<span>Health</span></h1>
+    </div>
+
+    <nav id="navMenu" class="nav-menu" aria-label="Main navigation">
+      <a href="#dashboard" class="nav-link active">Dashboard</a>
+      <a href="#stock" class="nav-link">Stock</a>
+      <a href="#patients" class="nav-link">Patients</a>
+      <a href="#beds" class="nav-link">Beds</a>
+      <a href="#doctors" class="nav-link">Doctors</a>
+      <a href="#tests" class="nav-link">Tests</a>
+      <a href="#alerts" class="nav-link">Alerts <span class="badge" id="navBadge">3</span></a>
+    </nav>
+
+    <div class="nav-right">
+      <!-- Language selector (multilingual requirement) -->
+      <select id="langSelect" class="lang-select" aria-label="Select language">
+        <option value="en">EN</option>
+        <option value="hi">हि</option>
+        <option value="mr">मरा</option>
+      </select>
+      <!-- Dark / light theme toggle -->
+      <button id="themeBtn" class="icon-btn" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <!-- Mobile menu button -->
+      <button id="menuBtn" class="icon-btn menu-btn" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Main content ===== -->
+  <main id="main" class="container">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section id="dashboard" class="page active">
+      <div class="page-head">
+        <h2 data-i18n="dashboard">District Dashboard</h2>
+        <p data-i18n="subtitle">Real-time overview of all PHCs & CHCs</p>
+        <button id="refreshBtn" class="btn"><i class="fas fa-sync"></i> <span data-i18n="refresh">Refresh</span></button>
+      </div>
+
+      <!-- 4 summary cards -->
+      <div class="cards" id="statCards"><!-- filled by JS --></div>
+
+      <!-- Charts row -->
+      <div class="grid-2">
+        <div class="card">
+          <h3 data-i18n="footfall">Patient Footfall (7 days)</h3>
+          <canvas id="footfallChart" height="220"></canvas>
+        </div>
+        <div class="card">
+          <h3 data-i18n="stockDonut">Stock Status</h3>
+          <canvas id="stockChart" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- AI recommendations -->
+      <div class="card">
+        <h3><i class="fas fa-brain"></i> <span data-i18n="aiRec">AI Redistribution Recommendations</span></h3>
+        <div id="aiList" class="list"><!-- filled by JS --></div>
+      </div>
+
+      <!-- Underperforming centres (flagging requirement) -->
+      <div class="card">
+        <h3 data-i18n="underperform">Flagged Centres (for Administrator)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Centre</th><th>Type</th><th>Issue</th><th>Severity</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="flaggedBody"><!-- filled by JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- STOCK ---------- -->
+    <section id="stock" class="page">
+      <div class="page-head">
+        <h2 data-i18n="stock">Medicine Stock & Forecast</h2>
+        <p data-i18n="stockSub">Early stock-out warnings + 7-day AI demand forecast</p>
+      </div>
+      <div class="table-wrap card">
+        <table>
+          <thead>
+            <tr>
+              <th>Medicine</th><th>Centre</th><th>In Stock</th><th>Reorder Level</th>
+              <th>Forecast (7d)</th><th>Days Left</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"><!-- filled by JS --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- PATIENTS ---------- -->
+    <section id="patients" class="page">
+      <div class="page-head">
+        <h2 data-i18n="patients">Patient Footfall</h2>
+        <p data-i18n="patientsSub">Daily footfall per centre</p>
+      </div>
+      <div class="cards" id="patientCards"><!-- filled by JS --></div>
+    </section>
+
+    <!-- ---------- BEDS ---------- -->
+    <section id="beds" class="page">
+      <div class="page-head">
+        <h2 data-i18n="beds">Bed Availability</h2>
+        <p data-i18n="bedsSub">Live occupancy across centres</p>
+      </div>
+      <div class="cards" id="bedCards"><!-- filled by JS --></div>
+    </section>
+
+    <!-- ---------- DOCTORS ---------- -->
+    <section id="doctors" class="page">
+      <div class="page-head">
+        <h2 data-i18n="doctors">Doctor Attendance</h2>
+        <p data-i18n="doctorsSub">Today's attendance audit</p>
+      </div>
+      <div class="table-wrap card">
+        <table>
+          <thead>
+            <tr><th>Doctor</th><th>Centre</th><th>Speciality</th><th>Today</th><th>This Week</th></tr>
+          </thead>
+          <tbody id="doctorBody"><!-- filled by JS --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- TESTS ---------- -->
+    <section id="tests" class="page">
+      <div class="page-head">
+        <h2 data-i18n="tests">Test Availability Audit</h2>
+        <p data-i18n="testsSub">Diagnostic services available at each centre</p>
+      </div>
+      <div class="cards" id="testCards"><!-- filled by JS --></div>
+    </section>
+
+    <!-- ---------- ALERTS ---------- -->
+    <section id="alerts" class="page">
+      <div class="page-head">
+        <h2 data-i18n="alerts">Alerts & Warnings</h2>
+        <p data-i18n="alertsSub">Stock-out, bed, attendance and test alerts</p>
+      </div>
+      <div id="alertList" class="list"><!-- filled by JS --></div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>Smart Health © 2026 — AI-Driven Health Center & Supply Chain Management</p>
+  </footer>
+
+  <!-- Chart.js library + our scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
